@@ -71,8 +71,6 @@ export default {
       cart.forEach(food => {
         this.total = this.total + food.order.price
       })
-      cart['totalPrice'] = this.total
-      console.log(cart)
       return this.total
     }
   }

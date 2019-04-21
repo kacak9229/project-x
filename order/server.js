@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const helmet = require('helmet')
 const cors = require('cors');
+const logger = require('morgan')
 
 const app = express()
 
@@ -15,6 +16,7 @@ require('dotenv').config()
 app.use(helmet())
 app.use(bodyParser.json())
 app.use(cors())
+app.use(logger('dev'))
 
 async function start() {
     console.log("Connecting to the database")

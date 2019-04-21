@@ -3,13 +3,14 @@ const axios = require('axios')
 const Order = require('../models/order_model.js')
 const User = require('../models/user_model.js')
 
+
+
 /**
  * /v1/order API will handle the req.body data
  * and call the payment API to handle the Mock detail
  */
 router.post("/v1/order", (req, res) => {
 
-    let paymentResponse;
     // Mocked User info
     const user = new User({
         name: "Naufal",
@@ -34,11 +35,13 @@ router.post("/v1/order", (req, res) => {
 
 
     // Calling the Payment API and check the response
-    axios.post('http://localhost:3002/api/v1/payment', {
+
+    axios.post('http://payment:3000/api/v1/payment', {
             order: order
         })
         .then(function (response) {
             // Success change the order status to confirmed
+            console.log(response)
             if (response.data.data === 0) {
                 order.status = "confirmed"
             } else {

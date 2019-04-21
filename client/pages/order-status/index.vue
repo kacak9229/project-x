@@ -29,9 +29,13 @@ import axios from 'axios'
 export default {
   components: {},
   async asyncData({ $axios }) {
-    let response = await $axios.$get('http://localhost:3001/api/v1/order/all')
-    return {
-      data: response.orders
+    try {
+      let response = await $axios.$get('http://0.0.0.0:3001/api/v1/order/all')
+      return {
+        data: response.orders
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 }

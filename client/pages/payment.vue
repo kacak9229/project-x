@@ -74,11 +74,7 @@
           >Pay RM {{ this.$store.state.cart.totalPrice }}</button>
         </template>
         <template v-else>
-          <a
-            href="http://www.jquery2dotnet.com"
-            class="btn btn-success btn-lg btn-block"
-            role="button"
-          >Pay 0</a>
+          <a href="#" class="btn btn-success btn-lg btn-block" role="button">Pay 0</a>
         </template>
       </div>
 
@@ -95,7 +91,7 @@ export default {
     async pay() {
       console.log(this.$store.state.cart)
       let response = await this.$axios.$post(
-        'http://localhost:3001/api/v1/order',
+        'http://0.0.0.0:3001/api/v1/order',
         {
           order: this.$store.state.cart
         }

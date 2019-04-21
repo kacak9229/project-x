@@ -86,28 +86,33 @@ export default {
     let status = 0
     let progressBar
     let statusBar
-    let response = await $axios.$get(
-      `http://localhost:3001/api/v1/order/${params.id}`
-    )
+    try {
+      let response = await $axios.$get(
+        `http://0.0.0.0:3001/api/v1/order/${params.id}`
+      )
 
-    if (response.order.status === 'confirmed') {
-      status = 50
-      countDown = 10
-    } else if (response.order.status === 'declined') {
-      status = 100
-      progressBar = 'bg-danger'
-    } else if (response.order.status === 'created') {
-      status = 25
-    } else if (response.order.status === 'delivered') {
-      status = 100
-    }
+      if (response.order.status === 'confirmed') {
+        status = 50
+        countDown = 10
+      } else if (response.order.status === 'declined') {
+        status = 100
+        progressBar = 'bg-danger'
+      } else if (response.order.status === 'created') {
+        status = 25
+      } else if (response.order.status === 'delivered') {
+        status = 100
+      }
 
-    return {
-      order: response.order || [],
-      widthStatus: `width: ${status}%`,
-      progressBar: `progress-bar ${progressBar}`,
-      status: response.order.status,
-      countDown: countDown
+      return {
+        order: response.order || [],
+        widthStatus: `width: ${status}%`,
+        progressBar: `progress-bar ${progressBar}`,
+        status: response.order.status,
+        countDown: countDown,
+        total: 0
+      }
+    } catch (error) {
+      console.log(error)
     }
   },
 
@@ -116,7 +121,7 @@ export default {
       let progressBar
       let status
       let response = await this.$axios.$post(
-        `http://localhost:3001/api/v1/order/cancel/${id}`
+        `http://0.0.0.0:3001/api/v1/order/cancel/${id}`
       )
 
       if (response.order.status === 'confirmed') {
@@ -145,7 +150,7 @@ export default {
 
       if (this.countDown === 0 && this.status === 'confirmed') {
         let response = await this.$axios.$post(
-          `http://localhost:3001/api/v1/order/change-status/${
+          `http://0.0.0.0:3001/api/v1/order/change-status/${
             this.$route.params.id
           }`
         )
@@ -159,9 +164,10 @@ export default {
   },
   computed: {
     totalPrice() {
-      let cart = this.$store.state.cart
-      cart.forEach(food => {
-        this.total = this.total + food.order.price
+      console.log(this.order.foods)
+      let order = this.order.foods
+      order.forEach(food => {
+        this.total = this.total + food.price
       })
       return this.total
     }
